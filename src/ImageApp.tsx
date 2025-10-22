@@ -1,23 +1,45 @@
-import { HeaderComponents , SearchBar  } from './sharedComponents'
+import { useState } from 'react'
 
+import { HeaderComponents , SearchBar  } from './sharedComponents'
 import { ImageList , PreviousSearches } from './imagesComponents'
 
+import { getImagesByQuery } from './actions/get-images-by-query2.actions'
 
 import { robots } from './mock-data/robots.mocks'
 
 import './index.css'
 
 
+
 export const ImageApp = () => {
 
-  //Comunicación entre componentes
+  const [ imagenPrevia , setImagenPrevia ] = useState(['']);
+
+
   const handleTermClicked = ( term:string ) => {
     console.log({ term });
   }
 
-  //Query a la consulta que el usuario escriba
+  
   const handleSearch = ( query:string ) => {
-    console.log(query);
+    
+
+    //1. Limpio el inicio y final de la query
+    query = query.trim().toLowerCase();
+
+    //2. Si la query viebne vacia cortamos la funcion
+    if(query.length === 0) return;
+
+    //3.Si lo que viene en la query ya esta 
+    if(imagenPrevia.includes(query)) return;
+
+    //4 agrego la query al iniciop del arreglo
+    // con ...imagenPrevia desparrramo todo lo que tengo
+    //en mi arreglo
+    setImagenPrevia([ query , ...imagenPrevia ].splice(0,7))
+
+    getImagesByQuery(query);
+
   }
 
   return (
@@ -35,7 +57,7 @@ export const ImageApp = () => {
 
         
        <PreviousSearches 
-            searches={['protoman','snakeman','bubleman','quickman']}
+            searches={ imagenPrevia }
             onLabelClicked = { handleTermClicked }
        />
 

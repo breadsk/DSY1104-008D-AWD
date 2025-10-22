@@ -8,11 +8,8 @@ interface Props{
 
 export const SearchBar:FC<Props> = ({ placeHolder , onQuery}) => {
 
-  const [ query , setQuery ] = useState('Hola');
+  const [ query , setQuery ] = useState('');
 
-  // const handleSearch = ( query:string ) => {
-  //   console.log(query);
-  // }  onQuery = handleSearch
   useEffect(()=> {
     
     const timeOutId = setTimeout(()=> {
@@ -27,24 +24,19 @@ export const SearchBar:FC<Props> = ({ placeHolder , onQuery}) => {
   },[query , onQuery])
   
   
-
-
-  // const handleSearch = ( query:string ) => {
-  //   console.log(query);
-  // }  onQuery = handleSearch
   const handleSearch = () => {
     onQuery(query);
+    setQuery('');
   }
 
   const handleKeyDown = (event:KeyboardEvent<HTMLInputElement>) => {
     if(event.key === 'Enter'){
-      console.log("Se apretó enter");
+      handleSearch()
     }
   }
 
   return (
-    <div className="search-container">
-        <h2>{ query }</h2>
+    <div className="search-container">      
         <input
           type="text" 
           placeholder={ placeHolder }
