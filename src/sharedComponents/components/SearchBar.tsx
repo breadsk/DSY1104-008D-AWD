@@ -25,8 +25,7 @@ export const SearchBar:FC<Props> = ({ placeHolder , onQuery}) => {
   
   
   const handleSearch = () => {
-    onQuery(query);
-    setQuery('');
+    onQuery(query);    
   }
 
   const handleKeyDown = (event:KeyboardEvent<HTMLInputElement>) => {

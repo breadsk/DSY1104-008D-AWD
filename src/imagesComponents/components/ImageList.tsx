@@ -1,20 +1,26 @@
-import type { robotsProps } from '../../mock-data/robots.mocks'
+import type { 
+        robotsProps        
+    } from '../../interfaces/images.interfaces';
 
 
 interface Props {
-    robots:robotsProps[]
+    robots:robotsProps[] | robotsProps
 }
 
 
 export const ImageList = ({ robots }:Props) => {
+  
+  const robotsArray = Array.isArray(robots) ? robots : [robots];
+
+
   return (
      <div className="gifs-container">
-        {
-            robots.map( ( robot ) => {
+         {
+            robotsArray.map((robot) => {
                 return (
-                    <div key={ robot.id } className="gif-card">
-                        <img src={ robot.avatar } alt={ robot.name } />
-                        <h3>{ robot.name }</h3>
+                    <div key={robot.id} className="gif-card">
+                        <img src={robot.avatar} alt={robot.name} />
+                        <h3>{robot.name}</h3>
                     </div>
                 )
             })

@@ -1,45 +1,81 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { HeaderComponents , SearchBar  } from './sharedComponents'
 import { ImageList , PreviousSearches } from './imagesComponents'
 
-import { getImagesByQuery } from './actions/get-images-by-query2.actions'
+import { getImagesByQuery } from './actions/get-images-by-query.actions'
+import { getImages } from './actions/get-images.actions'
 
-import { robots } from './mock-data/robots.mocks'
 
 import './index.css'
+import type { robotsProps } from './interfaces/images.interfaces'
+import type { responseProps } from './interfaces/images.interfaces'
 
 
 
 export const ImageApp = () => {
 
-  const [ imagenPrevia , setImagenPrevia ] = useState(['']);
+  const [ imagenPrevia , setImagenPrevia ] = useState<string[]>([]);
+  const [ images , setImages ] = useState<robotsProps[]>([]);
+  const [ allImages , setAllImages ] = useState<robotsProps[]>([]);
 
+  useEffect(() => {
+    const fetchData = async() => {
+      try{
+
+      const data = await getImages();
+      const robots = data.robots;
+      setImages(robots);
+      setAllImages(robots);
+
+      }catch(error){
+        console.error(`Error en fetchin data ${ error }`);
+      }
+    }
+
+    fetchData();
+  },[])
 
   const handleTermClicked = ( term:string ) => {
     console.log({ term });
   }
 
   
-  const handleSearch = ( query:string ) => {
-    
-
-    //1. Limpio el inicio y final de la query
+  const handleSearch = async( query:string ) => {
+        
     query = query.trim().toLowerCase();
 
-    //2. Si la query viebne vacia cortamos la funcion
-    if(query.length === 0) return;
+    if(query.length === 0){     
+      // Si la búsqueda está vacía, mostrar todos los robots
+      setImages(allImages);
+      return;
+    }
 
-    //3.Si lo que viene en la query ya esta 
     if(imagenPrevia.includes(query)) return;
+    
+    //Cuando usas la función de actualización con callback
+    //en un useState que maneja arreglos react automaticamente
+    //te pasa el valor más recientemente del estado como parametro
+    //por ende nos entrega el arreglo como viene antes de insertar 
+    //un nuevo elemento.
+    setImagenPrevia((prevSearches) => {
+      const updatedSearches = [query, ...prevSearches].slice(0,7);
+      return updatedSearches;
+    })
 
-    //4 agrego la query al iniciop del arreglo
-    // con ...imagenPrevia desparrramo todo lo que tengo
-    //en mi arreglo
-    setImagenPrevia([ query , ...imagenPrevia ].splice(0,7))
-
-    getImagesByQuery(query);
-
+    try{         
+      const searchResult = await getImagesByQuery(query);         
+    
+      if(searchResult.robot) {
+          console.log('✅ Primer robot:', searchResult.robot); // Debug
+          setImages([searchResult.robot]);
+      } else {
+          return;           
+      }
+    } catch(error) {
+        console.error(`🚨 Error en búsqueda: ${error}`);
+        setImages([]);
+    }
   }
 
   return (
@@ -63,7 +99,7 @@ export const ImageApp = () => {
 
         
         <ImageList 
-            robots={ robots } />
+            robots={ images } />
        
     </>
   )

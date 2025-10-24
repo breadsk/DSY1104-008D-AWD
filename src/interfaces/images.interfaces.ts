@@ -13,5 +13,11 @@ export interface robotsProps {
 export interface responseProps {
     ok:boolean;
     statusCode:string;
-    robot: robotsProps;
+    robots: robotsProps[];
+}
+
+export interface responseNameProps {
+    ok:string;
+    statusCode:number;
+    robot:robotsProps;
 }
