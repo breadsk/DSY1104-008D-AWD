@@ -1,3 +1,5 @@
+import { memo  } from "react";
+
 
 interface Props {
     searches: string[];
@@ -5,9 +7,13 @@ interface Props {
 }
 
 
-export const PreviousSearches = ({searches , onLabelClicked}:Props) => {
+export const PreviousSearches = memo(({searches , onLabelClicked}:Props) => {
 
   
+  const handleClick = (termino: string) => {
+        console.log('🖱️ Click en término:', termino);
+        onLabelClicked && onLabelClicked(termino);
+  };
 
   return (
      <div className="previous-searches">
@@ -18,9 +24,7 @@ export const PreviousSearches = ({searches , onLabelClicked}:Props) => {
                     return (
                         <li 
                             key={ termino }
-                            onClick={ () => {
-                                onLabelClicked && onLabelClicked(termino)
-                            }}
+                            onClick={ () => handleClick(termino) }
                             >{ termino }</li>
                     )
                 })
@@ -28,4 +32,4 @@ export const PreviousSearches = ({searches , onLabelClicked}:Props) => {
         </ul>
     </div>
   )
-}
+})
