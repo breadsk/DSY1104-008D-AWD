@@ -137,6 +137,10 @@ h1 {
   border-radius: 10px;
 }
 
+.gifs-container img:hover{
+  cursor: pointer;
+}
+
 @media (min-width: 768px) {
   .gifs-container {
     grid-template-columns: repeat(3, 1fr);

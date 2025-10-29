@@ -1,10 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
-import { ImageApp } from './ImageApp'
+import { AppRoutes } from './routes/AppRoutes'
+import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')!).render(
-  //<StrictMode>
-    <ImageApp />
-  //</StrictMode>,
+  <StrictMode>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  </StrictMode>,
 )

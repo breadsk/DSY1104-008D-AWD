@@ -10,7 +10,7 @@ export const getImages = async() => {
         throw new Error(`Error HTTP: ${response.status}`);
     }
 
-    const data:responseProps = await response.json();
+    const data:responseProps = await response.json();    
 
     return data;
 

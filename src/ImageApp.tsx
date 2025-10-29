@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { HeaderComponents , SearchBar  } from './sharedComponents'
 import { ImageList , PreviousSearches } from './imagesComponents'
 
-import { getImagesByQuery } from './actions/get-images-by-query.actions'
+import { getImagesByQuery } from './actions/get-images-by-name.actions'
 import { getImages } from './actions/get-images.actions'
 
 
@@ -61,7 +61,6 @@ export const ImageApp = () => {
       return updatedSearches;
     });
     
-
     try{      
       const searchResult = await getImagesByQuery(query);
 

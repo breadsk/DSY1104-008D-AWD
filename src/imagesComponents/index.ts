@@ -1,2 +1,3 @@
-export { ImageList } from './components/ImageList'
-export { PreviousSearches } from './components/PreviousSearches'
+export { ImageList } from './components'
+export { PreviousSearches } from './components'
+export { RobotComponent } from './components'
